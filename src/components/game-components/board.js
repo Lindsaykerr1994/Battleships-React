@@ -1,4 +1,4 @@
-import Table from "../table-comps/table";
+import Table from "../table-components/table";
 
 export default function Board({ user }) {
   return (
