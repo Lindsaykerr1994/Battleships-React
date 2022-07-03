@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Board from "./board";
-import Arsenal from "../arsenal-comps/arsenal";
+import Arsenal from "../arsenal-components/arsenal";
 import ShipsContext from "../../context/ships-context";
 import PlacedContext from "../../context/placed-context";
 import SelectedContext from "../../context/selected-context";
