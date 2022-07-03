@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./stylesheets/App.scss";
+
+import { SHIPS } from "./constants/ships";
+import ShipsContext from "./context/ships-context";
+
+import BoardContainer from "./components/game-components/board-container";
+import StartButton from "./components/miscellaneous/start-button";
 
 function App() {
+  const [gameState, setGameState] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ShipsContext.Provider value={SHIPS}>
+      <div className="App container">
+        <BoardContainer gameState={gameState} />
+        <div className="start-btn-container mt-3 row justify-content-center">
+          <div className="col-auto">
+            <StartButton gameState={gameState} setGameState={setGameState} />
+          </div>
+        </div>
+      </div>
+    </ShipsContext.Provider>
   );
 }
 

@@ -1,0 +1,22 @@
+table {
+  border-collapse: collapse;
+  .header-row,
+  .header-col {
+    min-width: 28px;
+    min-height: 28px;
+    text-align: center;
+    line-height: 27px;
+    padding: 0;
+  }
+  .game-piece:hover,
+  .game-piece.pseudo-hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  .game-piece[data-occupied='true'] {
+    background-color: rgba(0, 151, 151, 0.1);
+  }
+}
+table,
+td {
+  border: 0.4px solid black;
+}
