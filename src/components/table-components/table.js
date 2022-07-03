@@ -10,7 +10,7 @@ import PlacedContext from "../../context/placed-context";
 
 import { toBoolean  } from "../miscellaneous/shared";
 
-export default function Table() {
+export default function Table({oVar}) {
   const [shipSelected, selectShip] = useContext(SelectedContext);
   const [shipsPlaced, placeSelectedShip] = useContext(PlacedContext);
   const ships = useContext(ShipsContext);
@@ -24,7 +24,7 @@ export default function Table() {
   function getCellCoors(e) {
     let currentCells = e.currentTarget.dataset.coords;
     if (shipSelected && e.currentTarget.closest(".player-board-container")) {
-      shadeTableCells(calculateJoinedCells(getLengthOfShip(shipSelected, ships), currentCells));
+      shadeTableCells(calculateJoinedCells(getLengthOfShip(shipSelected, ships), currentCells, oVar));
     }
   }
 
@@ -34,7 +34,7 @@ export default function Table() {
     let currentCells = e.currentTarget.dataset.coords;
     let playerBoard = e.currentTarget.closest(".player-board-container");
     if (shipSelected && playerBoard) {
-      let potentialCoords = calculateJoinedCells(getLengthOfShip(shipSelected, ships), currentCells)
+      let potentialCoords = calculateJoinedCells(getLengthOfShip(shipSelected, ships), currentCells, oVar)
       if (checkCellOccupancy(potentialCoords, playerBoard)) return;
 
       changeCellOccupancy(potentialCoords, playerBoard);
@@ -61,12 +61,12 @@ function getLengthOfShip(shipSelected, ships) {
   }
 }
 
-function calculateJoinedCells(length, currentCoor, orientation = "H") {
+function calculateJoinedCells(length, currentCoor, orientation) {
   let startingCoor,
     constantCoor,
     startingIndex,
     axisArray = [];
-  if (orientation === "H") {
+  if (!orientation) {
     startingCoor = currentCoor[0];
     constantCoor = currentCoor.slice(1);
     axisArray = ROWS;
@@ -75,12 +75,13 @@ function calculateJoinedCells(length, currentCoor, orientation = "H") {
     constantCoor = currentCoor[0];
     axisArray = Array.from({ length: 10 }, (_, i) => i + 1);
   }
-  startingIndex = calculateStartingIndex(axisArray, startingCoor, length);
+  startingIndex = calculateStartingIndex(axisArray, startingCoor, length, orientation);
   return buildCoorsArray(length, startingIndex, axisArray, constantCoor, orientation);
 }
 
-function calculateStartingIndex(array, entry, length) {
-  let startingIndex = array.indexOf(entry);
+function calculateStartingIndex(array, entry, length, oVar) {
+  let n = oVar ? parseInt(entry) : entry;
+  let startingIndex = array.indexOf(n);
   if (startingIndex + length > array.length) {
     startingIndex = array.length - length;
   }
@@ -88,10 +89,9 @@ function calculateStartingIndex(array, entry, length) {
 }
 
 function buildCoorsArray(length, startingIndex, array, constantCoor, orientation) {
-  let res = [],
-    i;
-  for (i = 0; i < length; i++) {
-    res.push(orientation === "H" ? array[startingIndex + i] + constantCoor : constantCoor + array[startingIndex + 1]);
+  let res = [];
+  for (let i = 0; i < length; i++) {
+    res.push(!orientation ? array[startingIndex + i] + constantCoor : constantCoor + array[startingIndex + i]);
   }
   return res;
 }
@@ -101,7 +101,9 @@ function shadeTableCells(array) {
   let playerBoard = document.querySelector(".player-board-container");
   removeShading();
   for (i = 0; i < array.length; i++) {
-    playerBoard.querySelector(`.game-piece[data-coords="${array[i]}"]`).classList.add("pseudo-hover");
+    let square = playerBoard.querySelector(`.game-piece[data-coords="${array[i]}"]`)
+    if (!square) return;
+    square.classList.add("pseudo-hover");
   }
 }
 
