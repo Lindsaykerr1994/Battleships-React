@@ -5,8 +5,8 @@ import PlacedContext from "../../context/placed-context";
 import SelectedContext from "../../context/selected-context";
 import ShipKey from "./ship-key";
 
-export default function Arsenal({ gameState, selectShip }) {
-  let shipSelected = useContext(SelectedContext);
+export default function Arsenal({ gameState, shipsPlacedStatus }) {
+  let [shipSelected, selectShip] = useContext(SelectedContext);
   let shipsPlaced = useContext(PlacedContext)[0];
 
   let ships = useContext(ShipsContext);

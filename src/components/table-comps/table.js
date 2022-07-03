@@ -11,7 +11,7 @@ import PlacedContext from "../../context/placed-context";
 import { toBoolean  } from "../miscellaneous/shared";
 
 export default function Table() {
-  const shipSelected = useContext(SelectedContext);
+  const [shipSelected, selectShip] = useContext(SelectedContext);
   const [shipsPlaced, placeSelectedShip] = useContext(PlacedContext);
   const ships = useContext(ShipsContext);
 
@@ -39,6 +39,7 @@ export default function Table() {
 
       changeCellOccupancy(potentialCoords, playerBoard);
       placeSelectedShip([...shipsPlaced, shipSelected]);
+      selectShip("")
     }
   }
   return (

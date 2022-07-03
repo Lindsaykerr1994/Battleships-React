@@ -19,12 +19,12 @@ export default function BoardContainer({ gameState }) {
 
   return (
     <div className="board-container row">
-      <SelectedContext.Provider value={shipSelected}>
+      <SelectedContext.Provider value={[shipSelected, selectShip]}>
         <PlacedContext.Provider value={[placedShips, placeSelectedShip]}>
           <Board user="player" />
           <Board user="opponent" />
 
-          <Arsenal gameState={gameState} selectShip={selectShip} shipsPlacedStatus={shipsPlacedStatus} />
+          <Arsenal gameState={gameState} shipsPlacedStatus={shipsPlacedStatus} />
         </PlacedContext.Provider>
       </SelectedContext.Provider>
     </div>
