@@ -1,11 +1,13 @@
 import { useEffect, useContext } from "react";
 
+import { BsFillArrowRightCircleFill } from "react-icons/bs"; 
+
 import ShipsContext from "../../context/ships-context";
 import PlacedContext from "../../context/placed-context";
 import SelectedContext from "../../context/selected-context";
 import ShipKey from "./ship-key";
 
-export default function Arsenal({ gameState, shipsPlacedStatus }) {
+export default function Arsenal({ gameState, shipsPlacedStatus, orientation, changeOr }) {
   let [shipSelected, selectShip] = useContext(SelectedContext);
   let shipsPlaced = useContext(PlacedContext)[0];
 
@@ -21,7 +23,7 @@ export default function Arsenal({ gameState, shipsPlacedStatus }) {
   }, [shipSelected]);
 
   return (
-    <div id="arsenal" className={`${gameState ? "d-block" : "d-none"} container position-absolute`}>
+    <div id="arsenal" className={`${(gameState && !shipsPlacedStatus) ? "d-block" : "d-none"} container position-absolute`}>
       <div className="row">
         <div className="col-12">Arsenal</div>
       </div>
@@ -36,6 +38,11 @@ export default function Arsenal({ gameState, shipsPlacedStatus }) {
             shipsPlaced={shipsPlaced}
           />
         ))}
+      </div>
+      <div className="row">
+        <div className="col-6">
+          <BsFillArrowRightCircleFill onClick={() => changeOr(!orientation)} />
+        </div>
       </div>
     </div>
   );

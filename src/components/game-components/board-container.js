@@ -10,6 +10,8 @@ export default function BoardContainer({ gameState }) {
   const [shipsPlacedStatus, setShipsPlaced] = useState(false);
   const [placedShips, placeSelectedShip] = useState([]);
   const [shipSelected, selectShip] = useState("");
+  // Vertical = true, Horizontal = false;
+  const [orVar, changeOr] = useState(false);
 
   useEffect(() => {
     if (placedShips.length === ships.length) {
@@ -19,12 +21,13 @@ export default function BoardContainer({ gameState }) {
 
   return (
     <div className="board-container row">
+      <div>{orVar ? "Vertical" : "Horizontal"}</div>
       <SelectedContext.Provider value={[shipSelected, selectShip]}>
         <PlacedContext.Provider value={[placedShips, placeSelectedShip]}>
-          <Board user="player" />
+          <Board user="player" orientation = {orVar} />
           <Board user="opponent" />
 
-          <Arsenal gameState={gameState} shipsPlacedStatus={shipsPlacedStatus} />
+          <Arsenal gameState={gameState} shipsPlacedStatus={shipsPlacedStatus} orientation={orVar} changeOr={changeOr} />
         </PlacedContext.Provider>
       </SelectedContext.Provider>
     </div>
