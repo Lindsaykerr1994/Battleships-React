@@ -39,9 +39,10 @@ export default function Arsenal({ gameState, shipsPlacedStatus, orientation, cha
           />
         ))}
       </div>
-      <div className="row">
-        <div className="col-6">
-          <BsFillArrowRightCircleFill onClick={() => changeOr(!orientation)} />
+      <div className="row" onClick={() => changeOr(!orientation)} >
+        <div className="col-12">
+          <span className={`orientation-img ${orientation ? "vertical" : ""}`}><BsFillArrowRightCircleFill /></span>
+          <span className="ms-2">{ orientation ? "Vertical" : "Horizontal" }</span>
         </div>
       </div>
     </div>

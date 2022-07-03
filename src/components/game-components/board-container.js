@@ -21,7 +21,6 @@ export default function BoardContainer({ gameState }) {
 
   return (
     <div className="board-container row">
-      <div>{orVar ? "Vertical" : "Horizontal"}</div>
       <SelectedContext.Provider value={[shipSelected, selectShip]}>
         <PlacedContext.Provider value={[placedShips, placeSelectedShip]}>
           <Board user="player" orientation = {orVar} />
