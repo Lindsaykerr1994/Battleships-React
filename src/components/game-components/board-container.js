@@ -5,7 +5,7 @@ import ShipsContext from "../../context/ships-context";
 import PlacedContext from "../../context/placed-context";
 import SelectedContext from "../../context/selected-context";
 
-export default function BoardContainer({ gameState }) {
+export default function BoardContainer({ gameState, setMessage }) {
   let ships = useContext(ShipsContext);
   const [shipsPlacedStatus, setShipsPlaced] = useState(false);
   const [placedShips, placeSelectedShip] = useState([]);
@@ -18,6 +18,14 @@ export default function BoardContainer({ gameState }) {
       setShipsPlaced(true);
     }
   }, [placedShips.length, ships.length])
+
+  useEffect(() => {
+    if (gameState && shipsPlacedStatus) {
+      setMessage("Let's play!")
+    } else if (gameState && !shipsPlacedStatus) {
+      setMessage("Place your ships")
+    }
+  }, [shipsPlacedStatus, gameState, setMessage])
 
   return (
     <div className="board-container row">
