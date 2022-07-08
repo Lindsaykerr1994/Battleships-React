@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
-import Board from "./board";
-import Arsenal from "../arsenal-components/arsenal";
+import React, { useState, useEffect, useContext, useCallback } from "react";
+
 import ShipsContext from "../../context/ships-context";
 import PlacedContext from "../../context/placed-context";
 import SelectedContext from "../../context/selected-context";
+
+import Board from "./board";
+import Arsenal from "../arsenal-components/arsenal";
+
+import { getOpponentCoords } from "../miscellaneous/shared";
 
 export default function BoardContainer({ gameState, setMessage }) {
   let ships = useContext(ShipsContext);
@@ -12,6 +16,8 @@ export default function BoardContainer({ gameState, setMessage }) {
   const [shipSelected, selectShip] = useState("");
   // Vertical = true, Horizontal = false;
   const [orVar, changeOr] = useState(false);
+  const [oppCoors, setOppsCoords] = useState([])
+  const [playerTurn, changeTurn] = useState(false)
 
   useEffect(() => {
     if (placedShips.length === ships.length) {
@@ -19,13 +25,28 @@ export default function BoardContainer({ gameState, setMessage }) {
     }
   }, [placedShips.length, ships.length])
 
+    const makeGuess = useCallback((e) => {
+    if (!playerTurn) return;
+    console.log(e.currentTarget.dataset.coords);
+    changeTurn(false);
+  }, [playerTurn])
+
   useEffect(() => {
+    if (Object.keys(oppCoors).length) return;
     if (gameState && shipsPlacedStatus) {
-      setMessage("Let's play!")
+      setMessage("Let's play!");
+      setOppsCoords(getOpponentCoords());
+      document.querySelectorAll(".opponent-board-container .game-piece").forEach((cell) => {
+        cell.addEventListener("click", makeGuess)
+      })
+      changeTurn(true)
     } else if (gameState && !shipsPlacedStatus) {
       setMessage("Place your ships")
     }
-  }, [shipsPlacedStatus, gameState, setMessage])
+    
+  }, [shipsPlacedStatus, gameState, setMessage, oppCoors, makeGuess]);
+
+
 
   return (
     <div className="board-container row">
